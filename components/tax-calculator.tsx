@@ -46,7 +46,6 @@ export default function TaxCalculator() {
   const [spouseRelief, setSpouseRelief] = useState(0);
   const [childRelief, setChildRelief] = useState(0);
   const [childCount, setChildCount] = useState(0);
-  const [handicappedChildCount, setHandicappedChildCount] = useState(0);
   const [workingMotherChildRelief, setWorkingMotherChildRelief] = useState(0);
   const [parentRelief, setParentRelief] = useState(0);
   const [isParentHandicapped, setIsParentHandicapped] = useState(false);
@@ -130,9 +129,7 @@ export default function TaxCalculator() {
           </div>
 
           <div className="flex flex-row items-center gap-2">
-            <Label htmlFor="handicapped" className="ml-2">
-              Is Handicapped
-            </Label>
+            <Label htmlFor="handicapped">Is Handicapped</Label>
             <Switch
               id="handicapped"
               checked={isHandicapped}
@@ -153,18 +150,9 @@ export default function TaxCalculator() {
 
           <EarnedIncomeRelief value={earnedIncomeRelief} />
 
-          <SpouseRelief
-            value={spouseRelief}
-            onChange={setSpouseRelief}
-            isHandicapped={isHandicapped}
-          />
+          <SpouseRelief value={spouseRelief} onChange={setSpouseRelief} />
 
-          <ChildRelief
-            value={childRelief}
-            onChange={setChildRelief}
-            childCount={childCount}
-            handicappedChildCount={handicappedChildCount}
-          />
+          <ChildRelief value={childRelief} onChange={setChildRelief} />
 
           <WorkingMotherChildRelief
             value={workingMotherChildRelief}

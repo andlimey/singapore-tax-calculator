@@ -58,67 +58,66 @@ export const EarnedIncomeRelief: React.FC<{ value: number }> = ({ value }) => {
   );
 };
 
-export const SpouseRelief: React.FC<
-  ReliefProps & { isHandicapped: boolean }
-> = ({ value, onChange, isHandicapped }) => {
-  const maxRelief = isHandicapped ? 5500 : 2000;
-
+export const SpouseRelief: React.FC<ReliefProps> = ({ value, onChange }) => {
   return (
     <div className="space-y-2">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Label htmlFor="spouseRelief">Spouse Relief</Label>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>
-              Maximum relief is $5,500 for handicapped individuals and $2,000
-              for others.
-            </p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <div className="flex items-center space-x-2">
+        <Label htmlFor="spouseRelief">Spouse Relief</Label>
+
+        <ReliefTooltip>
+          <p>Spouse/handicapped spouse relief.</p>
+          <p>
+            Enter $2,000 for spouse relief or $5,500 for handicapped spouse
+            relief.
+          </p>
+          <p>
+            You are only eligible for spouse relief if the income of your spouse
+            in the previous year is not more than $4,000.
+          </p>
+        </ReliefTooltip>
+
+        <Link
+          target="_blank"
+          href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/spouse-relief-spouse-relief-(disability)"
+        >
+          <ExternalLinkIcon size={16} />
+        </Link>
+      </div>
+
       <Input
         id="spouseRelief"
         type="number"
         value={value}
-        onChange={(e) => onChange(Math.min(Number(e.target.value), maxRelief))}
-        max={maxRelief}
+        onChange={(e) => onChange(Number(e.target.value))}
       />
-      <p className="text-sm text-muted-foreground">
-        Maximum relief: ${maxRelief}
-      </p>
     </div>
   );
 };
 
-export const ChildRelief: React.FC<
-  ReliefProps & { childCount: number; handicappedChildCount: number }
-> = ({ value, onChange, childCount, handicappedChildCount }) => {
-  const maxRelief = childCount * 4000 + handicappedChildCount * 7500;
-
+export const ChildRelief: React.FC<ReliefProps> = ({ value, onChange }) => {
   return (
     <div className="space-y-2">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Label htmlFor="childRelief">Child Relief</Label>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Relief is $4,000 per child and $7,500 per handicapped child.</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <div className="flex items-center space-x-2">
+        <Label htmlFor="childRelief">Child Relief</Label>
+
+        <ReliefTooltip>
+          <p>Relief is $4,000 per child and $7,500 per handicapped child.</p>
+        </ReliefTooltip>
+
+        <Link
+          target="_blank"
+          href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/qualifying-child-relief-(qcr)-child-relief-(disability)"
+        >
+          <ExternalLinkIcon size={16} />
+        </Link>
+      </div>
+
       <Input
         id="childRelief"
         type="number"
         value={value}
-        onChange={(e) => onChange(Math.min(Number(e.target.value), maxRelief))}
-        max={maxRelief}
+        onChange={(e) => onChange(Number(e.target.value))}
       />
-      <p className="text-sm text-muted-foreground">
-        Maximum relief: ${maxRelief}
-      </p>
     </div>
   );
 };
@@ -136,21 +135,26 @@ export const WorkingMotherChildRelief: React.FC<
 
   return (
     <div className="space-y-2">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Label htmlFor="workingMotherChildRelief">
-              Working Mother's Child Relief
-            </Label>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>
-              This relief is calculated based on your earned income and number
-              of children.
-            </p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <div className="flex items-center space-x-2">
+        <Label htmlFor="workingMotherChildRelief">
+          Working Mother's Child Relief
+        </Label>
+
+        <ReliefTooltip>
+          <p>Enter the amount:</p>
+          <p>1st child - 15% of mother's earned income</p>
+          <p>2nd child - 20% of mother's earned income</p>
+          <p>3rd child onwards - 25% of mother's earned income</p>
+        </ReliefTooltip>
+
+        <Link
+          target="_blank"
+          href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/working-mother's-child-relief-(wmcr)"
+        >
+          <ExternalLinkIcon size={16} />
+        </Link>
+      </div>
+
       <Input
         id="workingMotherChildRelief"
         type="number"
@@ -178,19 +182,27 @@ export const ParentRelief: React.FC<
 
   return (
     <div className="space-y-2">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Label htmlFor="parentRelief">Parent Relief</Label>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>
-              Relief amounts vary based on whether you are handicapped and if
-              you are staying together with your spouse.
-            </p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <div className="flex items-center space-x-2">
+        <Label htmlFor="parentRelief">Parent Relief</Label>
+
+        <ReliefTooltip>
+          <p>
+            You can claim parent relief or handicapped parent relief for up to 2
+            dependants.
+          </p>
+          <p>The amount of relief for each dependant is as follows.</p>
+          <p>Staying with you: $9,000 or $14,000 (handicapped)</p>
+          <p>Not staying with you: $5,500 or $10,000 (handicapped)</p>
+        </ReliefTooltip>
+
+        <Link
+          target="_blank"
+          href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/parent-relief-parent-relief-(disability)"
+        >
+          <ExternalLinkIcon size={16} />
+        </Link>
+      </div>
+
       <Input
         id="parentRelief"
         type="number"
@@ -210,18 +222,35 @@ export const GrandparentCaregiverRelief: React.FC<ReliefProps> = ({
   onChange,
 }) => (
   <div className="space-y-2">
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Label htmlFor="grandparentCaregiverRelief">
-            Grandparent Caregiver Relief
-          </Label>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Maximum relief is $3,000.</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <div className="flex items-center space-x-2">
+      <Label htmlFor="grandparentCaregiverRelief">
+        Grandparent Caregiver Relief
+      </Label>
+
+      <ReliefTooltip>
+        <p>
+          Grandparent Caregiver Relief (GCR) is given to working mothers who
+          engage the help of their:
+        </p>
+        <ul>
+          <li>- Parents</li>
+          <li>- Grandparents</li>
+          <li>- Parents-in-law</li>
+          <li>- Grandparents-in-law (including those of ex-spouses)</li>
+        </ul>
+        <p>to take care of their children.</p>
+        <br />
+        <p>Enter $3,000 if you are entitled to this relief.</p>
+      </ReliefTooltip>
+
+      <Link
+        target="_blank"
+        href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/grandparent-caregiver-relief"
+      >
+        <ExternalLinkIcon size={16} />
+      </Link>
+    </div>
+
     <Input
       id="grandparentCaregiverRelief"
       type="number"
@@ -240,18 +269,25 @@ export const HandicappedSiblingRelief: React.FC<
 
   return (
     <div className="space-y-2">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Label htmlFor="handicappedSiblingRelief">
-              Handicapped Sibling Relief
-            </Label>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Relief is $5,500 per handicapped sibling.</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <div className="flex items-center space-x-2">
+        <Label htmlFor="handicappedSiblingRelief">
+          Handicapped Sibling Relief
+        </Label>
+        <ReliefTooltip>
+          <p>
+            Enter up to $5,500 for each of your or your spouse's brothers or
+            sisters who are handicapped and whom you maintained.
+          </p>
+        </ReliefTooltip>
+
+        <Link
+          target="_blank"
+          href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/sibling-relief-(disability)"
+        >
+          <ExternalLinkIcon size={16} />
+        </Link>
+      </div>
+
       <Input
         id="handicappedSiblingRelief"
         type="number"
@@ -268,16 +304,21 @@ export const HandicappedSiblingRelief: React.FC<
 
 export const CPFRelief: React.FC<ReliefProps> = ({ value, onChange }) => (
   <div className="space-y-2">
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Label htmlFor="cpfRelief">CPF Relief</Label>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Enter your CPF contribution amount.</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <div className="flex items-center space-x-2">
+      <Label htmlFor="cpfRelief">CPF Relief</Label>
+
+      <ReliefTooltip>
+        <p>Enter your CPF contribution amount.</p>
+      </ReliefTooltip>
+
+      <Link
+        target="_blank"
+        href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/central-provident-fund(cpf)-relief-for-employees"
+      >
+        <ExternalLinkIcon size={16} />
+      </Link>
+    </div>
+
     <Input
       id="cpfRelief"
       type="number"
@@ -294,16 +335,21 @@ export const LifeInsuranceRelief: React.FC<
 
   return (
     <div className="space-y-2">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Label htmlFor="lifeInsuranceRelief">Life Insurance Relief</Label>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Maximum relief is $5,000 less your CPF contribution.</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <div className="flex items-center space-x-2">
+        <Label htmlFor="lifeInsuranceRelief">Life Insurance Relief</Label>
+
+        <ReliefTooltip>
+          <p>Maximum relief is $5,000 less your CPF contribution.</p>
+        </ReliefTooltip>
+
+        <Link
+          target="_blank"
+          href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/life-insurance-relief"
+        >
+          <ExternalLinkIcon size={16} />
+        </Link>
+      </div>
+
       <Input
         id="lifeInsuranceRelief"
         type="number"
@@ -320,16 +366,20 @@ export const LifeInsuranceRelief: React.FC<
 
 export const CourseFeeRelief: React.FC<ReliefProps> = ({ value, onChange }) => (
   <div className="space-y-2">
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Label htmlFor="courseFeeRelief">Course Fee Relief</Label>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Maximum relief is $5,500.</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <div className="flex items-center space-x-2">
+      <Label htmlFor="courseFeeRelief">Course Fee Relief</Label>
+
+      <ReliefTooltip>
+        <p>Maximum relief is $5,500.</p>
+      </ReliefTooltip>
+
+      <Link
+        target="_blank"
+        href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/course-fees-relief"
+      >
+        <ExternalLinkIcon size={16} />
+      </Link>
+    </div>
     <Input
       id="courseFeeRelief"
       type="number"
@@ -346,18 +396,20 @@ export const ForeignDomesticWorkerLevyRelief: React.FC<ReliefProps> = ({
   onChange,
 }) => (
   <div className="space-y-2">
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Label htmlFor="fdwlRelief">
-            Foreign Domestic Worker Levy Relief
-          </Label>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Enter twice the total levy paid in the previous year.</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <div className="flex items-center space-x-2">
+      <Label htmlFor="fdwlRelief">Foreign Domestic Worker Levy Relief</Label>
+      <ReliefTooltip>
+        <p>Enter twice the total levy paid in the previous year.</p>
+      </ReliefTooltip>
+
+      <Link
+        target="_blank"
+        href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/foreign-domestic-worker-levy-(fdwl)-relief"
+      >
+        <ExternalLinkIcon size={16} />
+      </Link>
+    </div>
+
     <Input
       id="fdwlRelief"
       type="number"
