@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Card,
   CardContent,
@@ -10,53 +10,98 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import {
+  EarnedIncomeRelief,
+  SpouseRelief,
+  ChildRelief,
+  WorkingMotherChildRelief,
+  ParentRelief,
+  GrandparentCaregiverRelief,
+  HandicappedSiblingRelief,
+  CPFRelief,
+  LifeInsuranceRelief,
+  CourseFeeRelief,
+  ForeignDomesticWorkerLevyRelief,
+  NSmanRelief,
+} from "./tax-reliefs";
+import {
+  calculateEarnedIncomeRelief,
+  calculateTax,
+} from "@/api/tax-calculator";
+import { Switch } from "./ui/switch";
 
-interface TaxBracketRate {
-  min: number;
-  max: number;
-  rate: number;
-}
-
-const TAX_BRACKETS: Array<TaxBracketRate> = [
-  { min: 0, max: 20000, rate: 0 },
-  { min: 20000, max: 30000, rate: 0.02 },
-  { min: 30000, max: 40000, rate: 0.035 },
-  { min: 40000, max: 80000, rate: 0.07 },
-  { min: 80000, max: 120000, rate: 0.115 },
-  { min: 120000, max: 160000, rate: 0.15 },
-  { min: 160000, max: 200000, rate: 0.18 },
-  { min: 200000, max: 240000, rate: 0.19 },
-  { min: 240000, max: 280000, rate: 0.195 },
-  { min: 280000, max: 320000, rate: 0.2 },
-  { min: 320000, max: 500000, rate: 0.22 },
-  { min: 500000, max: 1000000, rate: 0.23 },
-  { min: 1000000, max: Number.POSITIVE_INFINITY, rate: 0.24 },
-];
-
-function calculateTax(income: number): number {
-  let tax = 0;
-
-  for (const bracket of TAX_BRACKETS) {
-    if (income <= bracket.min) {
-      break;
-    }
-    const taxableIncome = Math.min(income, bracket.max) - bracket.min;
-    tax += taxableIncome * bracket.rate;
-  }
-
-  return tax;
-}
+const RELIEFS_CAP = 80000;
 
 export default function TaxCalculator() {
   const [income, setIncome] = useState(0);
-  const [reliefs, setReliefs] = useState(0);
+
+  const [age, setAge] = useState(30);
+  const [isHandicapped, setIsHandicapped] = useState(false);
+  const earnedIncomeRelief = calculateEarnedIncomeRelief({
+    income,
+    age,
+    isHandicapped,
+  });
+
+  const [spouseRelief, setSpouseRelief] = useState(0);
+  const [childRelief, setChildRelief] = useState(0);
+  const [childCount, setChildCount] = useState(0);
+  const [handicappedChildCount, setHandicappedChildCount] = useState(0);
+  const [workingMotherChildRelief, setWorkingMotherChildRelief] = useState(0);
+  const [parentRelief, setParentRelief] = useState(0);
+  const [isParentHandicapped, setIsParentHandicapped] = useState(false);
+  const [isParentStayingTogether, setIsParentStayingTogether] = useState(false);
+  const [grandparentCaregiverRelief, setGrandparentCaregiverRelief] =
+    useState(0);
+  const [handicappedSiblingRelief, setHandicappedSiblingRelief] = useState(0);
+  const [handicappedSiblingCount, setHandicappedSiblingCount] = useState(0);
+  const [cpfRelief, setCPFRelief] = useState(0);
+  const [lifeInsuranceRelief, setLifeInsuranceRelief] = useState(0);
+  const [courseFeeRelief, setCourseFeeRelief] = useState(0);
+  const [fdwlRelief, setFDWLRelief] = useState(0);
+  const [nsmanRelief, setNSmanRelief] = useState(0);
+
   const [additionalRelief, setAdditionalRelief] = useState(0);
 
-  const chargeableIncome = Math.max(income - reliefs, 0);
+  const totalRelief = useMemo(() => {
+    return (
+      earnedIncomeRelief +
+      spouseRelief +
+      childRelief +
+      workingMotherChildRelief +
+      parentRelief +
+      grandparentCaregiverRelief +
+      handicappedSiblingRelief +
+      cpfRelief +
+      lifeInsuranceRelief +
+      courseFeeRelief +
+      fdwlRelief +
+      nsmanRelief
+    );
+  }, [
+    earnedIncomeRelief,
+    spouseRelief,
+    childRelief,
+    workingMotherChildRelief,
+    parentRelief,
+    grandparentCaregiverRelief,
+    handicappedSiblingRelief,
+    cpfRelief,
+    lifeInsuranceRelief,
+    courseFeeRelief,
+    fdwlRelief,
+    nsmanRelief,
+  ]);
+
+  const chargeableIncome = Math.max(
+    income - Math.min(totalRelief, RELIEFS_CAP),
+    0
+  );
+
   const taxPayable = calculateTax(chargeableIncome);
 
   const chargeableIncomeWithAdditional = Math.max(
-    income - reliefs - additionalRelief,
+    income - Math.min(totalRelief + additionalRelief, RELIEFS_CAP),
     0
   );
   const taxPayableWithAdditional = calculateTax(chargeableIncomeWithAdditional);
@@ -74,6 +119,28 @@ export default function TaxCalculator() {
       <CardContent>
         <form className="space-y-4">
           <div className="space-y-2">
+            <Label htmlFor="age">Age</Label>
+            <Input
+              id="age"
+              type="number"
+              placeholder="Enter your age"
+              value={age}
+              onChange={(e) => setAge(Number(e.target.value))}
+            />
+          </div>
+
+          <div className="flex flex-row items-center gap-2">
+            <Label htmlFor="handicapped" className="ml-2">
+              Is Handicapped
+            </Label>
+            <Switch
+              id="handicapped"
+              checked={isHandicapped}
+              onCheckedChange={setIsHandicapped}
+            />
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="income">Total Income (SGD)</Label>
             <Input
               id="income"
@@ -83,16 +150,67 @@ export default function TaxCalculator() {
               onChange={(e) => setIncome(Number(e.target.value))}
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="reliefs">Current Tax Reliefs (SGD)</Label>
-            <Input
-              id="reliefs"
-              type="number"
-              placeholder="Enter your current tax reliefs"
-              value={reliefs}
-              onChange={(e) => setReliefs(Number(e.target.value))}
-            />
-          </div>
+
+          <EarnedIncomeRelief value={earnedIncomeRelief} />
+
+          <SpouseRelief
+            value={spouseRelief}
+            onChange={setSpouseRelief}
+            isHandicapped={isHandicapped}
+          />
+
+          <ChildRelief
+            value={childRelief}
+            onChange={setChildRelief}
+            childCount={childCount}
+            handicappedChildCount={handicappedChildCount}
+          />
+
+          <WorkingMotherChildRelief
+            value={workingMotherChildRelief}
+            onChange={setWorkingMotherChildRelief}
+            motherEarnedIncome={income}
+            childCount={childCount}
+          />
+
+          <ParentRelief
+            value={parentRelief}
+            onChange={setParentRelief}
+            isHandicapped={isParentHandicapped}
+            isStayingTogether={isParentStayingTogether}
+          />
+
+          <GrandparentCaregiverRelief
+            value={grandparentCaregiverRelief}
+            onChange={setGrandparentCaregiverRelief}
+          />
+
+          <HandicappedSiblingRelief
+            value={handicappedSiblingRelief}
+            onChange={setHandicappedSiblingRelief}
+            siblingCount={handicappedSiblingCount}
+          />
+
+          <CPFRelief value={cpfRelief} onChange={setCPFRelief} />
+
+          <LifeInsuranceRelief
+            value={lifeInsuranceRelief}
+            onChange={setLifeInsuranceRelief}
+            cpfContribution={cpfRelief}
+          />
+
+          <CourseFeeRelief
+            value={courseFeeRelief}
+            onChange={setCourseFeeRelief}
+          />
+
+          <ForeignDomesticWorkerLevyRelief
+            value={fdwlRelief}
+            onChange={setFDWLRelief}
+          />
+
+          <NSmanRelief value={nsmanRelief} onChange={setNSmanRelief} />
+
           <div className="space-y-2">
             <Label htmlFor="additionalRelief">
               Additional Relief (e.g., SRS or CPF Top-up) (SGD)
@@ -106,7 +224,12 @@ export default function TaxCalculator() {
             />
           </div>
         </form>
-        <div className="mt-6 space-y-2">
+
+        <div className="mt-6 space-y-3">
+          <p>
+            Total Tax Relief (Capped at 80,000): SGD{" "}
+            {(totalRelief + additionalRelief).toFixed(2)}
+          </p>
           <p>Chargeable Income: SGD {chargeableIncome.toFixed(2)}</p>
           <p>Tax Payable: SGD {taxPayable.toFixed(2)}</p>
           <p>
