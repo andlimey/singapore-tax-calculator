@@ -5,6 +5,7 @@ import { RadioGroup, RadioGroupItem } from "./ui/radiogroup";
 import { ExternalLinkIcon } from "lucide-react";
 import { ReliefTooltip } from "./ui/relief-tooltip";
 import Link from "next/link";
+import { ReliefLabel } from "./ui/relief-label";
 
 interface ReliefProps {
   value: number;
@@ -55,28 +56,21 @@ export const EarnedIncomeRelief: React.FC<{ value: number }> = ({ value }) => {
 export const SpouseRelief: React.FC<ReliefProps> = ({ value, onChange }) => {
   return (
     <div className="space-y-2">
-      <div className="flex items-center space-x-2">
-        <Label htmlFor="spouseRelief">Spouse Relief</Label>
-
-        <ReliefTooltip>
-          <p>Spouse/handicapped spouse relief.</p>
-          <p>
-            Enter $2,000 for spouse relief or $5,500 for handicapped spouse
-            relief.
-          </p>
-          <p>
-            You are only eligible for spouse relief if the income of your spouse
-            in the previous year is not more than $4,000.
-          </p>
-        </ReliefTooltip>
-
-        <Link
-          target="_blank"
-          href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/spouse-relief-spouse-relief-(disability)"
-        >
-          <ExternalLinkIcon size={16} />
-        </Link>
-      </div>
+      <ReliefLabel
+        labelHtmlFor="spouseRelief"
+        label="Spouse Relief"
+        href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/spouse-relief-spouse-relief-(disability)"
+      >
+        <p>Spouse/handicapped spouse relief.</p>
+        <p>
+          Enter $2,000 for spouse relief or $5,500 for handicapped spouse
+          relief.
+        </p>
+        <p>
+          You are only eligible for spouse relief if the income of your spouse
+          in the previous year is not more than $4,000.
+        </p>
+      </ReliefLabel>
 
       <Input
         id="spouseRelief"
@@ -91,20 +85,13 @@ export const SpouseRelief: React.FC<ReliefProps> = ({ value, onChange }) => {
 export const ChildRelief: React.FC<ReliefProps> = ({ value, onChange }) => {
   return (
     <div className="space-y-2">
-      <div className="flex items-center space-x-2">
-        <Label htmlFor="childRelief">Child Relief</Label>
-
-        <ReliefTooltip>
-          <p>Relief is $4,000 per child and $7,500 per handicapped child.</p>
-        </ReliefTooltip>
-
-        <Link
-          target="_blank"
-          href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/qualifying-child-relief-(qcr)-child-relief-(disability)"
-        >
-          <ExternalLinkIcon size={16} />
-        </Link>
-      </div>
+      <ReliefLabel
+        labelHtmlFor="childRelief"
+        label="Child Relief"
+        href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/qualifying-child-relief-(qcr)-child-relief-(disability)"
+      >
+        <p>Relief is $4,000 per child and $7,500 per handicapped child.</p>
+      </ReliefLabel>
 
       <Input
         id="childRelief"
@@ -129,25 +116,16 @@ export const WorkingMotherChildRelief: React.FC<
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center space-x-2">
-        <Label htmlFor="workingMotherChildRelief">
-          Working Mother's Child Relief
-        </Label>
-
-        <ReliefTooltip>
-          <p>Enter the amount:</p>
-          <p>1st child - 15% of mother's earned income</p>
-          <p>2nd child - 20% of mother's earned income</p>
-          <p>3rd child onwards - 25% of mother's earned income</p>
-        </ReliefTooltip>
-
-        <Link
-          target="_blank"
-          href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/working-mother's-child-relief-(wmcr)"
-        >
-          <ExternalLinkIcon size={16} />
-        </Link>
-      </div>
+      <ReliefLabel
+        labelHtmlFor="workingMotherChildRelief"
+        label="Working Mother's Child Relief"
+        href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/working-mother's-child-relief-(wmcr)"
+      >
+        <p>Enter the amount:</p>
+        <p>1st child - 15% of mother's earned income</p>
+        <p>2nd child - 20% of mother's earned income</p>
+        <p>3rd child onwards - 25% of mother's earned income</p>
+      </ReliefLabel>
 
       <Input
         id="workingMotherChildRelief"
@@ -176,26 +154,19 @@ export const ParentRelief: React.FC<
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center space-x-2">
-        <Label htmlFor="parentRelief">Parent Relief</Label>
-
-        <ReliefTooltip>
-          <p>
-            You can claim parent relief or handicapped parent relief for up to 2
-            dependants.
-          </p>
-          <p>The amount of relief for each dependant is as follows.</p>
-          <p>Staying with you: $9,000 or $14,000 (handicapped)</p>
-          <p>Not staying with you: $5,500 or $10,000 (handicapped)</p>
-        </ReliefTooltip>
-
-        <Link
-          target="_blank"
-          href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/parent-relief-parent-relief-(disability)"
-        >
-          <ExternalLinkIcon size={16} />
-        </Link>
-      </div>
+      <ReliefLabel
+        labelHtmlFor="parentRelief"
+        label="Parent Relief"
+        href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/parent-relief-parent-relief-(disability)"
+      >
+        <p>
+          You can claim parent relief or handicapped parent relief for up to 2
+          dependants.
+        </p>
+        <p>The amount of relief for each dependant is as follows.</p>
+        <p>Staying with you: $9,000 or $14,000 (handicapped)</p>
+        <p>Not staying with you: $5,500 or $10,000 (handicapped)</p>
+      </ReliefLabel>
 
       <Input
         id="parentRelief"
@@ -216,34 +187,25 @@ export const GrandparentCaregiverRelief: React.FC<ReliefProps> = ({
   onChange,
 }) => (
   <div className="space-y-2">
-    <div className="flex items-center space-x-2">
-      <Label htmlFor="grandparentCaregiverRelief">
-        Grandparent Caregiver Relief
-      </Label>
-
-      <ReliefTooltip>
-        <p>
-          Grandparent Caregiver Relief (GCR) is given to working mothers who
-          engage the help of their:
-        </p>
-        <ul>
-          <li>- Parents</li>
-          <li>- Grandparents</li>
-          <li>- Parents-in-law</li>
-          <li>- Grandparents-in-law (including those of ex-spouses)</li>
-        </ul>
-        <p>to take care of their children.</p>
-        <br />
-        <p>Enter $3,000 if you are entitled to this relief.</p>
-      </ReliefTooltip>
-
-      <Link
-        target="_blank"
-        href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/grandparent-caregiver-relief"
-      >
-        <ExternalLinkIcon size={16} />
-      </Link>
-    </div>
+    <ReliefLabel
+      labelHtmlFor="grandparentCaregiverRelief"
+      label="Grandparent Caregiver Relief"
+      href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/grandparent-caregiver-relief"
+    >
+      <p>
+        Grandparent Caregiver Relief (GCR) is given to working mothers who
+        engage the help of their:
+      </p>
+      <ul>
+        <li>- Parents</li>
+        <li>- Grandparents</li>
+        <li>- Parents-in-law</li>
+        <li>- Grandparents-in-law (including those of ex-spouses)</li>
+      </ul>
+      <p>to take care of their children.</p>
+      <br />
+      <p>Enter $3,000 if you are entitled to this relief.</p>
+    </ReliefLabel>
 
     <Input
       id="grandparentCaregiverRelief"
@@ -263,24 +225,16 @@ export const HandicappedSiblingRelief: React.FC<
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center space-x-2">
-        <Label htmlFor="handicappedSiblingRelief">
-          Handicapped Sibling Relief
-        </Label>
-        <ReliefTooltip>
-          <p>
-            Enter up to $5,500 for each of your or your spouse's brothers or
-            sisters who are handicapped and whom you maintained.
-          </p>
-        </ReliefTooltip>
-
-        <Link
-          target="_blank"
-          href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/sibling-relief-(disability)"
-        >
-          <ExternalLinkIcon size={16} />
-        </Link>
-      </div>
+      <ReliefLabel
+        labelHtmlFor="handicappedSiblingRelief"
+        label="Handicapped Sibling Relief"
+        href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/sibling-relief-(disability)"
+      >
+        <p>
+          Enter up to $5,500 for each of your or your spouse's brothers or
+          sisters who are handicapped and whom you maintained.
+        </p>
+      </ReliefLabel>
 
       <Input
         id="handicappedSiblingRelief"
@@ -298,20 +252,13 @@ export const HandicappedSiblingRelief: React.FC<
 
 export const CPFRelief: React.FC<ReliefProps> = ({ value, onChange }) => (
   <div className="space-y-2">
-    <div className="flex items-center space-x-2">
-      <Label htmlFor="cpfRelief">CPF Relief</Label>
-
-      <ReliefTooltip>
-        <p>Enter your CPF contribution amount.</p>
-      </ReliefTooltip>
-
-      <Link
-        target="_blank"
-        href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/central-provident-fund(cpf)-relief-for-employees"
-      >
-        <ExternalLinkIcon size={16} />
-      </Link>
-    </div>
+    <ReliefLabel
+      labelHtmlFor="cpfRelief"
+      label="CPF Relief"
+      href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/central-provident-fund(cpf)-relief-for-employees"
+    >
+      <p>Enter your CPF contribution amount.</p>
+    </ReliefLabel>
 
     <Input
       id="cpfRelief"
@@ -329,20 +276,13 @@ export const LifeInsuranceRelief: React.FC<
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center space-x-2">
-        <Label htmlFor="lifeInsuranceRelief">Life Insurance Relief</Label>
-
-        <ReliefTooltip>
-          <p>Maximum relief is $5,000 less your CPF contribution.</p>
-        </ReliefTooltip>
-
-        <Link
-          target="_blank"
-          href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/life-insurance-relief"
-        >
-          <ExternalLinkIcon size={16} />
-        </Link>
-      </div>
+      <ReliefLabel
+        labelHtmlFor="lifeInsuranceRelief"
+        label="Life Insurance Relief"
+        href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/life-insurance-relief"
+      >
+        <p>Maximum relief is $5,000 less your CPF contribution.</p>
+      </ReliefLabel>
 
       <Input
         id="lifeInsuranceRelief"
@@ -360,20 +300,14 @@ export const LifeInsuranceRelief: React.FC<
 
 export const CourseFeeRelief: React.FC<ReliefProps> = ({ value, onChange }) => (
   <div className="space-y-2">
-    <div className="flex items-center space-x-2">
-      <Label htmlFor="courseFeeRelief">Course Fee Relief</Label>
+    <ReliefLabel
+      labelHtmlFor="courseFeeRelief"
+      label="Course Fee Relief"
+      href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/course-fees-relief"
+    >
+      <p>Maximum relief is $5,500.</p>
+    </ReliefLabel>
 
-      <ReliefTooltip>
-        <p>Maximum relief is $5,500.</p>
-      </ReliefTooltip>
-
-      <Link
-        target="_blank"
-        href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/course-fees-relief"
-      >
-        <ExternalLinkIcon size={16} />
-      </Link>
-    </div>
     <Input
       id="courseFeeRelief"
       type="number"
@@ -390,19 +324,13 @@ export const ForeignDomesticWorkerLevyRelief: React.FC<ReliefProps> = ({
   onChange,
 }) => (
   <div className="space-y-2">
-    <div className="flex items-center space-x-2">
-      <Label htmlFor="fdwlRelief">Foreign Domestic Worker Levy Relief</Label>
-      <ReliefTooltip>
-        <p>Enter twice the total levy paid in the previous year.</p>
-      </ReliefTooltip>
-
-      <Link
-        target="_blank"
-        href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/foreign-domestic-worker-levy-(fdwl)-relief"
-      >
-        <ExternalLinkIcon size={16} />
-      </Link>
-    </div>
+    <ReliefLabel
+      labelHtmlFor="fdwlRelief"
+      label="Foreign Domestic Worker Levy Relief"
+      href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/foreign-domestic-worker-levy-(fdwl)-relief"
+    >
+      <p>Enter twice the total levy paid in the previous year.</p>
+    </ReliefLabel>
 
     <Input
       id="fdwlRelief"
@@ -418,20 +346,13 @@ export const ForeignDomesticWorkerLevyRelief: React.FC<ReliefProps> = ({
 
 export const NSmanRelief: React.FC<ReliefProps> = ({ value, onChange }) => (
   <div className="space-y-2">
-    <div className="flex items-center space-x-2">
-      <Label htmlFor="nsmanRelief">NSman Relief</Label>
-
-      <ReliefTooltip>
-        <p>Select the appropriate relief amount based on your NSman status.</p>
-      </ReliefTooltip>
-
-      <Link
-        target="_blank"
-        href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/nsman-relief-(self-wife-and-parent)"
-      >
-        <ExternalLinkIcon size={16} />
-      </Link>
-    </div>
+    <ReliefLabel
+      labelHtmlFor="nsmanRelief"
+      label="NSman Relief"
+      href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/nsman-relief-(self-wife-and-parent)"
+    >
+      <p>Select the appropriate relief amount based on your NSman status.</p>
+    </ReliefLabel>
 
     <RadioGroup
       onValueChange={(val) => onChange(Number(val))}
