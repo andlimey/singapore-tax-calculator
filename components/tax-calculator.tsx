@@ -117,24 +117,26 @@ export default function TaxCalculator() {
       </CardHeader>
       <CardContent>
         <form className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="age">Age</Label>
-            <Input
-              id="age"
-              type="number"
-              placeholder="Enter your age"
-              value={age}
-              onChange={(e) => setAge(Number(e.target.value))}
-            />
-          </div>
+          <div className="flex flex-row gap-4 items-center">
+            <div className="flex flex-row items-center gap-2">
+              <Label htmlFor="age">Age</Label>
+              <Input
+                id="age"
+                type="number"
+                placeholder="Enter your age"
+                value={age}
+                onChange={(e) => setAge(Number(e.target.value))}
+              />
+            </div>
 
-          <div className="flex flex-row items-center gap-2">
-            <Label htmlFor="handicapped">Is Handicapped</Label>
-            <Switch
-              id="handicapped"
-              checked={isHandicapped}
-              onCheckedChange={setIsHandicapped}
-            />
+            <div className="flex flex-row items-center gap-2">
+              <Label htmlFor="handicapped">Is Handicapped</Label>
+              <Switch
+                id="handicapped"
+                checked={isHandicapped}
+                onCheckedChange={setIsHandicapped}
+              />
+            </div>
           </div>
 
           <div className="space-y-2">
@@ -213,20 +215,28 @@ export default function TaxCalculator() {
           </div>
         </form>
 
-        <div className="mt-6 space-y-3">
+        <div className="mt-6 border-t border-gray-200 pt-4 flex flex-col gap-4">
           <p>
             Total Tax Relief (Capped at 80,000): SGD{" "}
             {(totalRelief + additionalRelief).toFixed(2)}
           </p>
           <p>Chargeable Income: SGD {chargeableIncome.toFixed(2)}</p>
           <p>Tax Payable: SGD {taxPayable.toFixed(2)}</p>
-          <p>
-            Tax Payable with Additional Relief: SGD{" "}
-            {taxPayableWithAdditional.toFixed(2)}
-          </p>
-          <p className="font-bold">
-            Potential Tax Savings: SGD {taxSavings.toFixed(2)}
-          </p>
+          {additionalRelief ? (
+            <div className="border-t border-gray-200 flex flex-col gap-2 pt-4">
+              <p>
+                Tax Payable with Additional Relief: SGD{" "}
+                {taxPayableWithAdditional.toFixed(2)}
+              </p>
+              <p className="font-bold">
+                Potential Tax Savings: SGD {taxSavings.toFixed(2)}
+              </p>
+              <p>
+                You pay {((taxSavings / taxPayable) * 100).toFixed(2)}% less
+                taxes
+              </p>
+            </div>
+          ) : null}
         </div>
       </CardContent>
     </Card>
