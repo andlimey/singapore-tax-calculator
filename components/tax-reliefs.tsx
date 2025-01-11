@@ -1,12 +1,6 @@
 import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "./ui/tooltip";
 import { RadioGroup, RadioGroupItem } from "./ui/radiogroup";
 import { ExternalLinkIcon } from "lucide-react";
 import { ReliefTooltip } from "./ui/relief-tooltip";
