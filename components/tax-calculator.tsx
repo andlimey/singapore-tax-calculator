@@ -29,6 +29,8 @@ import {
 } from "@/api/tax-calculator";
 import { Switch } from "./ui/switch";
 import { useLocalStorage } from "@uidotdev/usehooks";
+import { RadioGroup } from "./ui/radiogroup";
+import { RadioGroupItem } from "./ui/radiogroup";
 
 const RELIEFS_CAP = 80000;
 
@@ -36,6 +38,7 @@ export default function TaxCalculator() {
   const [income, setIncome] = useLocalStorage("taxCalcIncome", 0);
   const [age, setAge] = useLocalStorage("taxCalcAge", 30);
   const [isHandicapped, setIsHandicapped] = useState(false);
+  const [gender, setGender] = useLocalStorage("taxCalcGender", "male");
   const earnedIncomeRelief = calculateEarnedIncomeRelief({
     income,
     age,
@@ -88,20 +91,25 @@ export default function TaxCalculator() {
   );
 
   const totalRelief = useMemo(() => {
-    return (
+    let currentReliefs =
       earnedIncomeRelief +
       spouseRelief +
       childRelief +
-      workingMotherChildRelief +
       parentRelief +
-      grandparentCaregiverRelief +
       handicappedSiblingRelief +
       cpfRelief +
       lifeInsuranceRelief +
       courseFeeRelief +
-      nsmanRelief
-    );
+      nsmanRelief;
+
+    if (gender === "female") {
+      currentReliefs += workingMotherChildRelief;
+      currentReliefs += grandparentCaregiverRelief;
+    }
+
+    return Math.min(currentReliefs, RELIEFS_CAP);
   }, [
+    gender,
     earnedIncomeRelief,
     spouseRelief,
     childRelief,
@@ -115,15 +123,15 @@ export default function TaxCalculator() {
     nsmanRelief,
   ]);
 
-  const chargeableIncome = Math.max(
-    income - Math.min(totalRelief, RELIEFS_CAP),
-    0
-  );
-
+  const chargeableIncome = Math.max(income - totalRelief, 0);
   const taxPayable = calculateTax(chargeableIncome);
 
+  const totalReliefWithAdditionalReliefs = Math.min(
+    totalRelief + additionalRelief,
+    RELIEFS_CAP
+  );
   const chargeableIncomeWithAdditional = Math.max(
-    income - Math.min(totalRelief + additionalRelief, RELIEFS_CAP),
+    income - totalReliefWithAdditionalReliefs,
     0
   );
   const taxPayableWithAdditional = calculateTax(chargeableIncomeWithAdditional);
@@ -163,6 +171,20 @@ export default function TaxCalculator() {
           </div>
 
           <div className="space-y-2">
+            <Label htmlFor="gender">Gender</Label>
+            <RadioGroup onValueChange={(val) => setGender(val)} value={gender}>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="male" id="male" />
+                <Label htmlFor="male">Male</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="female" id="female" />
+                <Label htmlFor="female">Female</Label>
+              </div>
+            </RadioGroup>
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="income">Total Income (SGD)</Label>
             <Input
               id="income"
@@ -179,12 +201,14 @@ export default function TaxCalculator() {
 
           <ChildRelief value={childRelief} onChange={setChildRelief} />
 
-          <WorkingMotherChildRelief
-            value={workingMotherChildRelief}
-            onChange={setWorkingMotherChildRelief}
-            motherEarnedIncome={income}
-            childCount={childCount}
-          />
+          {gender === "female" ? (
+            <WorkingMotherChildRelief
+              value={workingMotherChildRelief}
+              onChange={setWorkingMotherChildRelief}
+              motherEarnedIncome={income}
+              childCount={childCount}
+            />
+          ) : null}
 
           <ParentRelief
             value={parentRelief}
@@ -193,10 +217,12 @@ export default function TaxCalculator() {
             isStayingTogether={isParentStayingTogether}
           />
 
-          <GrandparentCaregiverRelief
-            value={grandparentCaregiverRelief}
-            onChange={setGrandparentCaregiverRelief}
-          />
+          {gender === "female" ? (
+            <GrandparentCaregiverRelief
+              value={grandparentCaregiverRelief}
+              onChange={setGrandparentCaregiverRelief}
+            />
+          ) : null}
 
           <HandicappedSiblingRelief
             value={handicappedSiblingRelief}
@@ -234,14 +260,18 @@ export default function TaxCalculator() {
         </form>
 
         <div className="mt-6 border-t border-gray-200 pt-4 flex flex-col gap-4">
-          <p>
-            Total Tax Relief (Capped at 80,000): SGD{" "}
-            {(totalRelief + additionalRelief).toFixed(2)}
-          </p>
           <p>Chargeable Income: SGD {chargeableIncome.toFixed(2)}</p>
+          <p>
+            Total Tax Relief excluding top-ups (Capped at 80,000): SGD{" "}
+            {totalRelief.toFixed(2)}
+          </p>
           <p>Tax Payable: SGD {taxPayable.toFixed(2)}</p>
           {additionalRelief ? (
             <div className="border-t border-gray-200 flex flex-col gap-2 pt-4">
+              <p>
+                Total Tax Relief (Capped at 80,000): SGD{" "}
+                {totalReliefWithAdditionalReliefs.toFixed(2)}
+              </p>
               <p>
                 Tax Payable with Additional Relief: SGD{" "}
                 {taxPayableWithAdditional.toFixed(2)}
