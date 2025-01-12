@@ -29,38 +29,65 @@ import {
   calculateTax,
 } from "@/api/tax-calculator";
 import { Switch } from "./ui/switch";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
 const RELIEFS_CAP = 80000;
 
 export default function TaxCalculator() {
-  const [income, setIncome] = useState(0);
-
-  const [age, setAge] = useState(30);
+  const [income, setIncome] = useLocalStorage("taxCalcIncome", 0);
+  const [age, setAge] = useLocalStorage("taxCalcAge", 30);
   const [isHandicapped, setIsHandicapped] = useState(false);
   const earnedIncomeRelief = calculateEarnedIncomeRelief({
     income,
     age,
     isHandicapped,
   });
-
-  const [spouseRelief, setSpouseRelief] = useState(0);
-  const [childRelief, setChildRelief] = useState(0);
-  const [childCount, setChildCount] = useState(0);
-  const [workingMotherChildRelief, setWorkingMotherChildRelief] = useState(0);
-  const [parentRelief, setParentRelief] = useState(0);
+  const [spouseRelief, setSpouseRelief] = useLocalStorage(
+    "taxCalcSpouseRelief",
+    0
+  );
+  const [childRelief, setChildRelief] = useLocalStorage(
+    "taxCalcChildRelief",
+    0
+  );
+  const [childCount, setChildCount] = useLocalStorage("taxCalcChildCount", 0);
+  const [workingMotherChildRelief, setWorkingMotherChildRelief] =
+    useLocalStorage("taxCalcWorkingMotherChildRelief", 0);
+  const [parentRelief, setParentRelief] = useLocalStorage(
+    "taxCalcParentRelief",
+    0
+  );
   const [isParentHandicapped, setIsParentHandicapped] = useState(false);
-  const [isParentStayingTogether, setIsParentStayingTogether] = useState(false);
+  const [isParentStayingTogether, setIsParentStayingTogether] = useLocalStorage(
+    "taxCalcIsParentStayingTogether",
+    false
+  );
   const [grandparentCaregiverRelief, setGrandparentCaregiverRelief] =
-    useState(0);
-  const [handicappedSiblingRelief, setHandicappedSiblingRelief] = useState(0);
-  const [handicappedSiblingCount, setHandicappedSiblingCount] = useState(0);
-  const [cpfRelief, setCPFRelief] = useState(0);
-  const [lifeInsuranceRelief, setLifeInsuranceRelief] = useState(0);
-  const [courseFeeRelief, setCourseFeeRelief] = useState(0);
-  const [fdwlRelief, setFDWLRelief] = useState(0);
-  const [nsmanRelief, setNSmanRelief] = useState(0);
-
-  const [additionalRelief, setAdditionalRelief] = useState(0);
+    useLocalStorage("taxCalcGrandparentCaregiverRelief", 0);
+  const [handicappedSiblingRelief, setHandicappedSiblingRelief] =
+    useLocalStorage("taxCalcHandicappedSiblingRelief", 0);
+  const [handicappedSiblingCount, setHandicappedSiblingCount] = useLocalStorage(
+    "taxCalcHandicappedSiblingCount",
+    0
+  );
+  const [cpfRelief, setCPFRelief] = useLocalStorage("taxCalcCPFRelief", 0);
+  const [lifeInsuranceRelief, setLifeInsuranceRelief] = useLocalStorage(
+    "taxCalcLifeInsuranceRelief",
+    0
+  );
+  const [courseFeeRelief, setCourseFeeRelief] = useLocalStorage(
+    "taxCalcCourseFeeRelief",
+    0
+  );
+  const [fdwlRelief, setFDWLRelief] = useLocalStorage("taxCalcFDWLRelief", 0);
+  const [nsmanRelief, setNSmanRelief] = useLocalStorage(
+    "taxCalcNSmanRelief",
+    0
+  );
+  const [additionalRelief, setAdditionalRelief] = useLocalStorage(
+    "taxCalcAdditionalRelief",
+    0
+  );
 
   const totalRelief = useMemo(() => {
     return (
