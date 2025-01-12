@@ -21,7 +21,6 @@ import {
   CPFRelief,
   LifeInsuranceRelief,
   CourseFeeRelief,
-  ForeignDomesticWorkerLevyRelief,
   NSmanRelief,
 } from "./tax-reliefs";
 import {
@@ -79,7 +78,6 @@ export default function TaxCalculator() {
     "taxCalcCourseFeeRelief",
     0
   );
-  const [fdwlRelief, setFDWLRelief] = useLocalStorage("taxCalcFDWLRelief", 0);
   const [nsmanRelief, setNSmanRelief] = useLocalStorage(
     "taxCalcNSmanRelief",
     0
@@ -101,7 +99,6 @@ export default function TaxCalculator() {
       cpfRelief +
       lifeInsuranceRelief +
       courseFeeRelief +
-      fdwlRelief +
       nsmanRelief
     );
   }, [
@@ -115,7 +112,6 @@ export default function TaxCalculator() {
     cpfRelief,
     lifeInsuranceRelief,
     courseFeeRelief,
-    fdwlRelief,
     nsmanRelief,
   ]);
 
@@ -219,11 +215,6 @@ export default function TaxCalculator() {
           <CourseFeeRelief
             value={courseFeeRelief}
             onChange={setCourseFeeRelief}
-          />
-
-          <ForeignDomesticWorkerLevyRelief
-            value={fdwlRelief}
-            onChange={setFDWLRelief}
           />
 
           <NSmanRelief value={nsmanRelief} onChange={setNSmanRelief} />

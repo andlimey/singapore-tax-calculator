@@ -319,31 +319,6 @@ export const CourseFeeRelief: React.FC<ReliefProps> = ({ value, onChange }) => (
   </div>
 );
 
-export const ForeignDomesticWorkerLevyRelief: React.FC<ReliefProps> = ({
-  value,
-  onChange,
-}) => (
-  <div className="space-y-2">
-    <ReliefLabel
-      labelHtmlFor="fdwlRelief"
-      label="Foreign Domestic Worker Levy Relief"
-      href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/foreign-domestic-worker-levy-(fdwl)-relief"
-    >
-      <p>Enter twice the total levy paid in the previous year.</p>
-    </ReliefLabel>
-
-    <Input
-      id="fdwlRelief"
-      type="number"
-      value={value}
-      onChange={(e) => onChange(Number(e.target.value))}
-    />
-    <p className="text-sm text-muted-foreground">
-      Enter twice the total levy paid in the previous year
-    </p>
-  </div>
-);
-
 export const NSmanRelief: React.FC<ReliefProps> = ({ value, onChange }) => (
   <div className="space-y-2">
     <ReliefLabel
