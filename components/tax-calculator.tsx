@@ -37,8 +37,12 @@ const RELIEFS_CAP = 80000;
 export default function TaxCalculator() {
   const [income, setIncome] = useLocalStorage("taxCalcIncome", 0);
   const [age, setAge] = useLocalStorage("taxCalcAge", 30);
-  const [isHandicapped, setIsHandicapped] = useState(false);
+  const [isHandicapped, setIsHandicapped] = useLocalStorage(
+    "taxCalcIsHandicapped",
+    false
+  );
   const [gender, setGender] = useLocalStorage("taxCalcGender", "male");
+
   const earnedIncomeRelief = calculateEarnedIncomeRelief({
     income,
     age,
@@ -62,10 +66,6 @@ export default function TaxCalculator() {
     useLocalStorage("taxCalcGrandparentCaregiverRelief", 0);
   const [handicappedSiblingRelief, setHandicappedSiblingRelief] =
     useLocalStorage("taxCalcHandicappedSiblingRelief", 0);
-  const [handicappedSiblingCount, setHandicappedSiblingCount] = useLocalStorage(
-    "taxCalcHandicappedSiblingCount",
-    0
-  );
   const [cpfRelief, setCPFRelief] = useLocalStorage("taxCalcCPFRelief", 0);
   const [lifeInsuranceRelief, setLifeInsuranceRelief] = useLocalStorage(
     "taxCalcLifeInsuranceRelief",
@@ -214,7 +214,6 @@ export default function TaxCalculator() {
           <HandicappedSiblingRelief
             value={handicappedSiblingRelief}
             onChange={setHandicappedSiblingRelief}
-            siblingCount={handicappedSiblingCount}
           />
 
           <CPFRelief value={cpfRelief} onChange={setCPFRelief} />
@@ -222,7 +221,6 @@ export default function TaxCalculator() {
           <LifeInsuranceRelief
             value={lifeInsuranceRelief}
             onChange={setLifeInsuranceRelief}
-            cpfContribution={cpfRelief}
           />
 
           <CourseFeeRelief

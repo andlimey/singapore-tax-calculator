@@ -193,11 +193,10 @@ export const GrandparentCaregiverRelief: React.FC<ReliefProps> = ({
   </div>
 );
 
-export const HandicappedSiblingRelief: React.FC<
-  ReliefProps & { siblingCount: number }
-> = ({ value, onChange, siblingCount }) => {
-  const maxRelief = siblingCount * 5500;
-
+export const HandicappedSiblingRelief: React.FC<ReliefProps> = ({
+  value,
+  onChange,
+}) => {
   return (
     <div className="space-y-2">
       <ReliefLabel
@@ -215,12 +214,8 @@ export const HandicappedSiblingRelief: React.FC<
         id="handicappedSiblingRelief"
         type="number"
         value={value}
-        onChange={(e) => onChange(Math.min(Number(e.target.value), maxRelief))}
-        max={maxRelief}
+        onChange={(e) => onChange(Number(e.target.value))}
       />
-      <p className="text-sm text-muted-foreground">
-        Maximum relief: ${maxRelief}
-      </p>
     </div>
   );
 };
@@ -244,11 +239,10 @@ export const CPFRelief: React.FC<ReliefProps> = ({ value, onChange }) => (
   </div>
 );
 
-export const LifeInsuranceRelief: React.FC<
-  ReliefProps & { cpfContribution: number }
-> = ({ value, onChange, cpfContribution }) => {
-  const maxRelief = Math.max(0, 5000 - cpfContribution);
-
+export const LifeInsuranceRelief: React.FC<ReliefProps> = ({
+  value,
+  onChange,
+}) => {
   return (
     <div className="space-y-2">
       <ReliefLabel
@@ -263,12 +257,10 @@ export const LifeInsuranceRelief: React.FC<
         id="lifeInsuranceRelief"
         type="number"
         value={value}
-        onChange={(e) => onChange(Math.min(Number(e.target.value), maxRelief))}
-        max={maxRelief}
+        onChange={(e) => onChange(Number(e.target.value))}
+        max={5000}
       />
-      <p className="text-sm text-muted-foreground">
-        Maximum relief: ${maxRelief}
-      </p>
+      <p className="text-sm text-muted-foreground">Maximum relief: $5000</p>
     </div>
   );
 };
