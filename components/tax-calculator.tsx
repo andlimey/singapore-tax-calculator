@@ -58,11 +58,6 @@ export default function TaxCalculator() {
     "taxCalcParentRelief",
     0
   );
-  const [isParentHandicapped, setIsParentHandicapped] = useState(false);
-  const [isParentStayingTogether, setIsParentStayingTogether] = useLocalStorage(
-    "taxCalcIsParentStayingTogether",
-    false
-  );
   const [grandparentCaregiverRelief, setGrandparentCaregiverRelief] =
     useLocalStorage("taxCalcGrandparentCaregiverRelief", 0);
   const [handicappedSiblingRelief, setHandicappedSiblingRelief] =
@@ -207,12 +202,7 @@ export default function TaxCalculator() {
             />
           ) : null}
 
-          <ParentRelief
-            value={parentRelief}
-            onChange={setParentRelief}
-            isHandicapped={isParentHandicapped}
-            isStayingTogether={isParentStayingTogether}
-          />
+          <ParentRelief value={parentRelief} onChange={setParentRelief} />
 
           {gender === "female" ? (
             <GrandparentCaregiverRelief

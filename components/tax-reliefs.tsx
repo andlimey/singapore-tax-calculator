@@ -130,17 +130,7 @@ export const WorkingMotherChildRelief: React.FC<ReliefProps> = ({
   );
 };
 
-export const ParentRelief: React.FC<
-  ReliefProps & { isHandicapped: boolean; isStayingTogether: boolean }
-> = ({ value, onChange, isHandicapped, isStayingTogether }) => {
-  const maxRelief = isHandicapped
-    ? isStayingTogether
-      ? 14000
-      : 10000
-    : isStayingTogether
-    ? 9000
-    : 5500;
-
+export const ParentRelief: React.FC<ReliefProps> = ({ value, onChange }) => {
   return (
     <div className="space-y-2">
       <ReliefLabel
@@ -161,12 +151,8 @@ export const ParentRelief: React.FC<
         id="parentRelief"
         type="number"
         value={value}
-        onChange={(e) => onChange(Math.min(Number(e.target.value), maxRelief))}
-        max={maxRelief}
+        onChange={(e) => onChange(Number(e.target.value))}
       />
-      <p className="text-sm text-muted-foreground">
-        Maximum relief: ${maxRelief}
-      </p>
     </div>
   );
 };
