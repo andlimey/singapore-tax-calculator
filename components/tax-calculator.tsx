@@ -52,7 +52,6 @@ export default function TaxCalculator() {
     "taxCalcChildRelief",
     0
   );
-  const [childCount, setChildCount] = useLocalStorage("taxCalcChildCount", 0);
   const [workingMotherChildRelief, setWorkingMotherChildRelief] =
     useLocalStorage("taxCalcWorkingMotherChildRelief", 0);
   const [parentRelief, setParentRelief] = useLocalStorage(
@@ -205,8 +204,6 @@ export default function TaxCalculator() {
             <WorkingMotherChildRelief
               value={workingMotherChildRelief}
               onChange={setWorkingMotherChildRelief}
-              motherEarnedIncome={income}
-              childCount={childCount}
             />
           ) : null}
 

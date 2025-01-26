@@ -103,17 +103,10 @@ export const ChildRelief: React.FC<ReliefProps> = ({ value, onChange }) => {
   );
 };
 
-export const WorkingMotherChildRelief: React.FC<
-  ReliefProps & { motherEarnedIncome: number; childCount: number }
-> = ({ value, onChange, motherEarnedIncome, childCount }) => {
-  const maxRelief = Math.min(
-    motherEarnedIncome,
-    motherEarnedIncome *
-      (0.15 +
-        (childCount > 1 ? 0.2 : 0) +
-        (childCount > 2 ? 0.25 * (childCount - 2) : 0))
-  );
-
+export const WorkingMotherChildRelief: React.FC<ReliefProps> = ({
+  value,
+  onChange,
+}) => {
   return (
     <div className="space-y-2">
       <ReliefLabel
@@ -122,21 +115,17 @@ export const WorkingMotherChildRelief: React.FC<
         href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/working-mother's-child-relief-(wmcr)"
       >
         <p>Enter the amount:</p>
-        <p>1st child - 15% of mother's earned income</p>
-        <p>2nd child - 20% of mother's earned income</p>
-        <p>3rd child onwards - 25% of mother's earned income</p>
+        <p>1st child - $8,000</p>
+        <p>2nd child - $10,000</p>
+        <p>3rd child onwards - $12,000</p>
       </ReliefLabel>
 
       <Input
         id="workingMotherChildRelief"
         type="number"
         value={value}
-        onChange={(e) => onChange(Math.min(Number(e.target.value), maxRelief))}
-        max={maxRelief}
+        onChange={(e) => onChange(Number(e.target.value))}
       />
-      <p className="text-sm text-muted-foreground">
-        Maximum relief: ${maxRelief.toFixed(2)}
-      </p>
     </div>
   );
 };
