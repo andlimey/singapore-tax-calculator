@@ -301,6 +301,10 @@ export const NSmanRelief: React.FC<ReliefProps> = ({ value, onChange }) => (
       value={value.toString()}
     >
       <div className="flex items-center space-x-2">
+        <RadioGroupItem value="0" id="r6" />
+        <Label htmlFor="r5">Not Applicable</Label>
+      </div>
+      <div className="flex items-center space-x-2">
         <RadioGroupItem value="1500" id="r1" />
         <Label htmlFor="r1">$1,500 (Non-key appointment holder, no ICT)</Label>
       </div>
