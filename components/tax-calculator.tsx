@@ -24,6 +24,7 @@ import {
   NSmanRelief,
 } from "./tax-reliefs";
 import {
+  calculateCPFRelief,
   calculateEarnedIncomeRelief,
   calculateTax,
 } from "@/api/tax-calculator";
@@ -34,8 +35,12 @@ import { RadioGroupItem } from "./ui/radiogroup";
 
 const RELIEFS_CAP = 80000;
 
+// Missing donations
 export default function TaxCalculator() {
   const [income, setIncome] = useLocalStorage("taxCalcIncome", 0);
+  const [bonus, setBonus] = useLocalStorage("taxCalcBonus", 0);
+  const annualIncome = income + bonus;
+
   const [age, setAge] = useLocalStorage("taxCalcAge", 30);
   const [isHandicapped, setIsHandicapped] = useLocalStorage(
     "taxCalcIsHandicapped",
@@ -44,10 +49,12 @@ export default function TaxCalculator() {
   const [gender, setGender] = useLocalStorage("taxCalcGender", "male");
 
   const earnedIncomeRelief = calculateEarnedIncomeRelief({
-    income,
+    income: annualIncome,
     age,
     isHandicapped,
   });
+  const cpfRelief = calculateCPFRelief(age, income, bonus);
+
   const [spouseRelief, setSpouseRelief] = useLocalStorage(
     "taxCalcSpouseRelief",
     0
@@ -66,7 +73,6 @@ export default function TaxCalculator() {
     useLocalStorage("taxCalcGrandparentCaregiverRelief", 0);
   const [handicappedSiblingRelief, setHandicappedSiblingRelief] =
     useLocalStorage("taxCalcHandicappedSiblingRelief", 0);
-  const [cpfRelief, setCPFRelief] = useLocalStorage("taxCalcCPFRelief", 0);
   const [lifeInsuranceRelief, setLifeInsuranceRelief] = useLocalStorage(
     "taxCalcLifeInsuranceRelief",
     0
@@ -117,7 +123,7 @@ export default function TaxCalculator() {
     nsmanRelief,
   ]);
 
-  const chargeableIncome = Math.max(income - totalRelief, 0);
+  const chargeableIncome = Math.max(annualIncome - totalRelief, 0);
   const taxPayable = calculateTax(chargeableIncome);
 
   const totalReliefWithAdditionalReliefs = Math.min(
@@ -125,7 +131,7 @@ export default function TaxCalculator() {
     RELIEFS_CAP
   );
   const chargeableIncomeWithAdditional = Math.max(
-    income - totalReliefWithAdditionalReliefs,
+    annualIncome - totalReliefWithAdditionalReliefs,
     0
   );
   const taxPayableWithAdditional = calculateTax(chargeableIncomeWithAdditional);
@@ -179,17 +185,28 @@ export default function TaxCalculator() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="income">Total Income (SGD)</Label>
+            <Label htmlFor="income">Income (excluding bonuses)</Label>
             <Input
               id="income"
               type="number"
-              placeholder="Enter your total income"
               value={income}
               onChange={(e) => setIncome(Number(e.target.value))}
             />
           </div>
 
+          <div className="space-y-2">
+            <Label htmlFor="bonus">Annual Bonus</Label>
+            <Input
+              id="bonus"
+              type="number"
+              value={bonus}
+              onChange={(e) => setBonus(Number(e.target.value))}
+            />
+          </div>
+
           <EarnedIncomeRelief value={earnedIncomeRelief} />
+
+          <CPFRelief value={cpfRelief} />
 
           <SpouseRelief value={spouseRelief} onChange={setSpouseRelief} />
 
@@ -216,8 +233,6 @@ export default function TaxCalculator() {
             onChange={setHandicappedSiblingRelief}
           />
 
-          <CPFRelief value={cpfRelief} onChange={setCPFRelief} />
-
           <LifeInsuranceRelief
             value={lifeInsuranceRelief}
             onChange={setLifeInsuranceRelief}
@@ -232,7 +247,7 @@ export default function TaxCalculator() {
 
           <div className="space-y-2">
             <Label htmlFor="additionalRelief">
-              Additional Relief (e.g., SRS or CPF Top-up) (SGD)
+              Additional Relief (e.g. SRS contribution, CPF Top-up, etc.) (SGD)
             </Label>
             <Input
               id="additionalRelief"
@@ -251,6 +266,7 @@ export default function TaxCalculator() {
             {totalRelief.toFixed(2)}
           </p>
           <p>Tax Payable: SGD {taxPayable.toFixed(2)}</p>
+          {/* Amount with additional relief is wrong */}
           {additionalRelief ? (
             <div className="border-t border-gray-200 flex flex-col gap-2 pt-4">
               <p>

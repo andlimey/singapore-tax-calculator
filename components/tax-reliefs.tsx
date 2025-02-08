@@ -220,24 +220,33 @@ export const HandicappedSiblingRelief: React.FC<ReliefProps> = ({
   );
 };
 
-export const CPFRelief: React.FC<ReliefProps> = ({ value, onChange }) => (
-  <div className="space-y-2">
-    <ReliefLabel
-      labelHtmlFor="cpfRelief"
-      label="CPF Relief"
-      href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/central-provident-fund(cpf)-relief-for-employees"
-    >
-      <p>Enter your CPF contribution amount.</p>
-    </ReliefLabel>
+export const CPFRelief: React.FC<{ value: number }> = ({ value }) => {
+  return (
+    <div className="flex flex-row gap-4">
+      <div className="flex items-center space-x-2">
+        <p>CPF Relief</p>
 
-    <Input
-      id="cpfRelief"
-      type="number"
-      value={value}
-      onChange={(e) => onChange(Number(e.target.value))}
-    />
-  </div>
-);
+        <ReliefTooltip>
+          <p>
+            CPF Relief is capped by the amount of compulsory employee CPF
+            contributions made on Ordinary Wages and Additional Wages under the
+            CPF Act.
+          </p>
+        </ReliefTooltip>
+
+        <Link
+          target="_blank"
+          href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/central-provident-fund(cpf)-relief-for-employees"
+        >
+          <ExternalLinkIcon size={16} />
+        </Link>
+        <span>:</span>
+      </div>
+
+      <span>{`$${value}`}</span>
+    </div>
+  );
+};
 
 export const LifeInsuranceRelief: React.FC<ReliefProps> = ({
   value,

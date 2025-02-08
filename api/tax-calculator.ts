@@ -67,3 +67,41 @@ export function calculateEarnedIncomeRelief({
 
   return Math.min(income, maxRelief);
 }
+
+const ORDINARY_WAGE_CEILING = 88_800; // 7_400 * 12
+const CPF_ANNUAL_WAGE_CEILING = 102_000;
+
+function getAdditionalWageCeiling(totalOrdinaryWage: number): number {
+  return Math.max(0, CPF_ANNUAL_WAGE_CEILING - totalOrdinaryWage);
+}
+
+function getEmployeeCPFContributionRate(age: number): number {
+  if (age <= 55) {
+    return 0.2;
+  } else if (age <= 60) {
+    return 0.17;
+  } else if (age <= 65) {
+    return 0.115;
+  } else if (age <= 70) {
+    return 0.075;
+  } else {
+    return 0.05;
+  }
+}
+
+export function calculateCPFRelief(
+  age: number,
+  annualIncome: number,
+  annualBonus: number
+): number {
+  const contributionRate = getEmployeeCPFContributionRate(age);
+  const totalOrdinaryWage = Math.min(annualIncome, ORDINARY_WAGE_CEILING);
+
+  const additionalWageCeiling = getAdditionalWageCeiling(totalOrdinaryWage);
+  const totalAdditionalWage = Math.min(annualBonus, additionalWageCeiling);
+
+  const ordinaryWageContribution = totalOrdinaryWage * contributionRate;
+  const additionalWageContribution = totalAdditionalWage * contributionRate;
+
+  return ordinaryWageContribution + additionalWageContribution;
+}
