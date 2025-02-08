@@ -33,7 +33,7 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 import { RadioGroup } from "./ui/radiogroup";
 import { RadioGroupItem } from "./ui/radiogroup";
 
-const RELIEFS_CAP = 80000;
+const RELIEFS_CAP = 80_000;
 
 // Missing donations
 export default function TaxCalculator() {
@@ -123,6 +123,8 @@ export default function TaxCalculator() {
     nsmanRelief,
   ]);
 
+  const additionalReliefsCap = Math.max(RELIEFS_CAP - totalRelief, 0);
+
   const chargeableIncome = Math.max(annualIncome - totalRelief, 0);
   const taxPayable = calculateTax(chargeableIncome);
 
@@ -146,8 +148,9 @@ export default function TaxCalculator() {
           Calculate your tax savings based on your income and reliefs
         </CardDescription>
       </CardHeader>
+
       <CardContent>
-        <form className="space-y-4">
+        <div className="space-y-4">
           <div className="flex flex-row gap-4 items-center">
             <div className="flex flex-row items-center gap-2">
               <Label htmlFor="age">Age</Label>
@@ -254,10 +257,19 @@ export default function TaxCalculator() {
               type="number"
               placeholder="Enter additional relief"
               value={additionalRelief}
-              onChange={(e) => setAdditionalRelief(Number(e.target.value))}
+              onChange={(e) =>
+                setAdditionalRelief(
+                  Math.min(Number(e.target.value), additionalReliefsCap)
+                )
+              }
+              max={additionalReliefsCap}
+              disabled={additionalReliefsCap === 0}
             />
+            <p className="text-sm text-muted-foreground">
+              {`Maximum relief: ${additionalReliefsCap.toFixed(2)}`}
+            </p>
           </div>
-        </form>
+        </div>
 
         <div className="mt-6 border-t border-gray-200 pt-4 flex flex-col gap-4">
           <p>Chargeable Income: SGD {chargeableIncome.toFixed(2)}</p>
@@ -266,7 +278,6 @@ export default function TaxCalculator() {
             {totalRelief.toFixed(2)}
           </p>
           <p>Tax Payable: SGD {taxPayable.toFixed(2)}</p>
-          {/* Amount with additional relief is wrong */}
           {additionalRelief ? (
             <div className="border-t border-gray-200 flex flex-col gap-2 pt-4">
               <p>
