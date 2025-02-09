@@ -204,7 +204,7 @@ export const HandicappedSiblingRelief: React.FC<ReliefProps> = ({
         href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/sibling-relief-(disability)"
       >
         <p>
-          Enter up to $5,500 for each of your or your spouse's brothers or
+          Enter up to $5,500 for each of your or your spouse&apos;s brothers or
           sisters who are handicapped and whom you maintained.
         </p>
       </ReliefLabel>
