@@ -304,10 +304,13 @@ export default function TaxCalculator() {
             Total Relief (Capped at 80,000): ${totalRelief.toLocaleString()}
           </p>
           <p>Chargeable Income: ${chargeableIncome.toLocaleString()}</p>
-          <p>Tax Payable: ${taxPayable.toLocaleString()}</p>
+          <p>
+            Tax Payable:&nbsp;
+            <span className="font-bold">${taxPayable.toLocaleString()}</span>
+          </p>
 
           {additionalRelief > 0 && (
-            <div className="border-t border-gray-200 flex flex-col gap-2 pt-4">
+            <div className="border-t border-gray-200 flex flex-col gap-4 pt-4">
               <p>
                 Tax Payable with Additional Relief: $
                 {taxPayableWithAdditional.toLocaleString()}
