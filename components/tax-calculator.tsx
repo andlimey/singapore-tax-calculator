@@ -22,6 +22,7 @@ import {
   LifeInsuranceRelief,
   CourseFeeRelief,
   NSmanRelief,
+  AdditionalRelief,
 } from "./tax-reliefs";
 import {
   calculateCPFRelief,
@@ -34,13 +35,27 @@ import { RadioGroup } from "./ui/radiogroup";
 import { RadioGroupItem } from "./ui/radiogroup";
 
 const RELIEFS_CAP = 80_000;
+const DONATIONS_MULTIPLIER = 2.5;
 
-// Missing donations
 export default function TaxCalculator() {
+  // Income
   const [income, setIncome] = useLocalStorage("taxCalcIncome", 0);
   const [bonus, setBonus] = useLocalStorage("taxCalcBonus", 0);
-  const annualIncome = income + bonus;
+  const [businessExpenses, setBusinessExpenses] = useLocalStorage(
+    "taxCalcBusinessExpenses",
+    0
+  );
+  const [otherIncome, setOtherIncome] = useLocalStorage(
+    "taxCalcOtherIncome",
+    0
+  );
+  const [donations, setDonations] = useLocalStorage("taxCalcDonations", 0);
+  const employmentIncome = income + bonus;
+  const netEmploymentIncome = employmentIncome - businessExpenses;
+  const totalIncome = netEmploymentIncome + otherIncome;
+  const assessableIncome = totalIncome - donations * DONATIONS_MULTIPLIER;
 
+  // Reliefs
   const [age, setAge] = useLocalStorage("taxCalcAge", 30);
   const [isHandicapped, setIsHandicapped] = useLocalStorage(
     "taxCalcIsHandicapped",
@@ -49,7 +64,7 @@ export default function TaxCalculator() {
   const [gender, setGender] = useLocalStorage("taxCalcGender", "male");
 
   const earnedIncomeRelief = calculateEarnedIncomeRelief({
-    income: annualIncome,
+    income: assessableIncome,
     age,
     isHandicapped,
   });
@@ -123,9 +138,10 @@ export default function TaxCalculator() {
     nsmanRelief,
   ]);
 
-  const additionalReliefsCap = Math.max(RELIEFS_CAP - totalRelief, 0);
+  const additionalReliefCap = Math.max(RELIEFS_CAP - totalRelief, 0);
 
-  const chargeableIncome = Math.max(annualIncome - totalRelief, 0);
+  // Tax Calculation
+  const chargeableIncome = Math.max(0, assessableIncome - totalRelief);
   const taxPayable = calculateTax(chargeableIncome);
 
   const totalReliefWithAdditionalReliefs = Math.min(
@@ -133,7 +149,7 @@ export default function TaxCalculator() {
     RELIEFS_CAP
   );
   const chargeableIncomeWithAdditional = Math.max(
-    annualIncome - totalReliefWithAdditionalReliefs,
+    assessableIncome - totalReliefWithAdditionalReliefs,
     0
   );
   const taxPayableWithAdditional = calculateTax(chargeableIncomeWithAdditional);
@@ -143,160 +159,174 @@ export default function TaxCalculator() {
   return (
     <Card className="w-full max-w-2xl">
       <CardHeader>
-        <CardTitle>Tax Calculator</CardTitle>
+        <CardTitle>Income Tax Calculator</CardTitle>
         <CardDescription>
-          Calculate your tax savings based on your income and reliefs
+          Calculate your income tax based on your income and applicable reliefs
         </CardDescription>
       </CardHeader>
 
-      <CardContent>
-        <div className="space-y-4">
-          <div className="flex flex-row gap-4 items-center">
-            <div className="flex flex-row items-center gap-2">
-              <Label htmlFor="age">Age</Label>
-              <Input
-                id="age"
-                type="number"
-                placeholder="Enter your age"
-                value={age}
-                onChange={(e) => setAge(Number(e.target.value))}
-              />
-            </div>
-
-            <div className="flex flex-row items-center gap-2">
-              <Label htmlFor="handicapped">Is Handicapped</Label>
-              <Switch
-                id="handicapped"
-                checked={isHandicapped}
-                onCheckedChange={setIsHandicapped}
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="gender">Gender</Label>
-            <RadioGroup onValueChange={(val) => setGender(val)} value={gender}>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="male" id="male" />
-                <Label htmlFor="male">Male</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="female" id="female" />
-                <Label htmlFor="female">Female</Label>
-              </div>
-            </RadioGroup>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="income">Income (excluding bonuses)</Label>
+      <CardContent className="space-y-6">
+        {/* Income */}
+        <div>
+          <h3 className="text-lg font-bold">Income</h3>
+          <div className="grid grid-cols-[300px_1fr] gap-4 items-center">
+            <Label>Employment Income</Label>
             <Input
-              id="income"
               type="number"
               value={income}
               onChange={(e) => setIncome(Number(e.target.value))}
             />
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="bonus">Annual Bonus</Label>
+            <Label>Bonus</Label>
             <Input
-              id="bonus"
               type="number"
               value={bonus}
               onChange={(e) => setBonus(Number(e.target.value))}
             />
-          </div>
 
-          <EarnedIncomeRelief value={earnedIncomeRelief} />
-
-          <CPFRelief value={cpfRelief} />
-
-          <SpouseRelief value={spouseRelief} onChange={setSpouseRelief} />
-
-          <ChildRelief value={childRelief} onChange={setChildRelief} />
-
-          {gender === "female" ? (
-            <WorkingMotherChildRelief
-              value={workingMotherChildRelief}
-              onChange={setWorkingMotherChildRelief}
-            />
-          ) : null}
-
-          <ParentRelief value={parentRelief} onChange={setParentRelief} />
-
-          {gender === "female" ? (
-            <GrandparentCaregiverRelief
-              value={grandparentCaregiverRelief}
-              onChange={setGrandparentCaregiverRelief}
-            />
-          ) : null}
-
-          <HandicappedSiblingRelief
-            value={handicappedSiblingRelief}
-            onChange={setHandicappedSiblingRelief}
-          />
-
-          <LifeInsuranceRelief
-            value={lifeInsuranceRelief}
-            onChange={setLifeInsuranceRelief}
-          />
-
-          <CourseFeeRelief
-            value={courseFeeRelief}
-            onChange={setCourseFeeRelief}
-          />
-
-          <NSmanRelief value={nsmanRelief} onChange={setNSmanRelief} />
-
-          <div className="space-y-2">
-            <Label htmlFor="additionalRelief">
-              Additional Relief (e.g. SRS contribution, CPF Top-up, etc.) (SGD)
-            </Label>
+            <Label className="pl-4">Less: Business Expenses</Label>
             <Input
-              id="additionalRelief"
               type="number"
-              placeholder="Enter additional relief"
-              value={additionalRelief}
-              onChange={(e) =>
-                setAdditionalRelief(
-                  Math.min(Number(e.target.value), additionalReliefsCap)
-                )
-              }
-              max={additionalReliefsCap}
-              disabled={additionalReliefsCap === 0}
+              value={businessExpenses}
+              onChange={(e) => setBusinessExpenses(Number(e.target.value))}
             />
-            <p className="text-sm text-muted-foreground">
-              {`Maximum relief: ${additionalReliefsCap.toFixed(2)}`}
-            </p>
+
+            <Label className="font-bold">Net Employment Income</Label>
+            <div>${netEmploymentIncome.toLocaleString()}</div>
+
+            <Label>Other Income</Label>
+            <Input
+              type="number"
+              value={otherIncome}
+              onChange={(e) => setOtherIncome(Number(e.target.value))}
+            />
+
+            <Label className="font-bold">Total Income</Label>
+            <div>${totalIncome.toLocaleString()}</div>
+
+            <Label className="pl-4">Less: Approved Donations</Label>
+            <Input
+              type="number"
+              value={donations}
+              onChange={(e) => setDonations(Number(e.target.value))}
+            />
+
+            <Label className="font-bold">Assessable Income</Label>
+            <div>${assessableIncome.toLocaleString()}</div>
           </div>
         </div>
 
-        <div className="mt-6 border-t border-gray-200 pt-4 flex flex-col gap-4">
-          <p>Chargeable Income: SGD {chargeableIncome.toFixed(2)}</p>
+        <div className="border-b border-gray-200" />
+
+        {/* Reliefs */}
+        <div>
+          <h3 className="text-lg font-bold">Reliefs</h3>
+
+          <div className="grid grid-cols-[300px_1fr] items-center gap-x-4 gap-y-6">
+            <Label>Age</Label>
+            <Input
+              type="number"
+              placeholder="Enter your age"
+              value={age}
+              onChange={(e) => setAge(Number(e.target.value))}
+            />
+
+            <Label>Gender</Label>
+            <RadioGroup onValueChange={(val) => setGender(val)} value={gender}>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="male" id="male" />
+                <Label htmlFor="male">Male</Label>
+                <RadioGroupItem value="female" id="female" className="ml-4" />
+                <Label htmlFor="female">Female</Label>
+              </div>
+            </RadioGroup>
+
+            <Label>Is Handicapped</Label>
+            <Switch
+              checked={isHandicapped}
+              onCheckedChange={setIsHandicapped}
+            />
+
+            <EarnedIncomeRelief value={earnedIncomeRelief} />
+
+            <CPFRelief value={cpfRelief} />
+
+            <SpouseRelief value={spouseRelief} onChange={setSpouseRelief} />
+
+            <ChildRelief value={childRelief} onChange={setChildRelief} />
+
+            {gender === "female" ? (
+              <WorkingMotherChildRelief
+                value={workingMotherChildRelief}
+                onChange={setWorkingMotherChildRelief}
+              />
+            ) : null}
+
+            <ParentRelief value={parentRelief} onChange={setParentRelief} />
+
+            {gender === "female" ? (
+              <GrandparentCaregiverRelief
+                value={grandparentCaregiverRelief}
+                onChange={setGrandparentCaregiverRelief}
+              />
+            ) : null}
+
+            <HandicappedSiblingRelief
+              value={handicappedSiblingRelief}
+              onChange={setHandicappedSiblingRelief}
+            />
+
+            <LifeInsuranceRelief
+              value={lifeInsuranceRelief}
+              onChange={setLifeInsuranceRelief}
+            />
+
+            <CourseFeeRelief
+              value={courseFeeRelief}
+              onChange={setCourseFeeRelief}
+            />
+
+            <NSmanRelief value={nsmanRelief} onChange={setNSmanRelief} />
+
+            <AdditionalRelief
+              value={additionalRelief}
+              onChange={setAdditionalRelief}
+              additionalReliefCap={additionalReliefCap}
+            />
+          </div>
+        </div>
+
+        <div className="border-b border-gray-200" />
+
+        {/* Tax Calculation */}
+        <div className="flex flex-col gap-4">
           <p>
-            Total Tax Relief excluding top-ups (Capped at 80,000): SGD{" "}
-            {totalRelief.toFixed(2)}
+            Total Relief (Capped at 80,000): ${totalRelief.toLocaleString()}
           </p>
-          <p>Tax Payable: SGD {taxPayable.toFixed(2)}</p>
-          {additionalRelief ? (
+          <p>Chargeable Income: ${chargeableIncome.toLocaleString()}</p>
+          <p>Tax Payable: ${taxPayable.toLocaleString()}</p>
+
+          {additionalRelief > 0 && (
             <div className="border-t border-gray-200 flex flex-col gap-2 pt-4">
               <p>
-                Total Tax Relief (Capped at 80,000): SGD{" "}
-                {totalReliefWithAdditionalReliefs.toFixed(2)}
+                Tax Payable with Additional Relief: $
+                {taxPayableWithAdditional.toLocaleString()}
               </p>
               <p>
-                Tax Payable with Additional Relief: SGD{" "}
-                {taxPayableWithAdditional.toFixed(2)}
-              </p>
-              <p className="font-bold">
-                Potential Tax Savings: SGD {taxSavings.toFixed(2)}
+                Tax Savings:&nbsp;
+                <span className="font-bold">
+                  ${taxSavings.toLocaleString()}
+                </span>
               </p>
               <p>
-                You pay {((taxSavings / taxPayable) * 100).toFixed(2)}% less
-                taxes
+                You pay&nbsp;
+                <span className="font-bold">
+                  {((taxSavings / taxPayable) * 100).toFixed(2)}%
+                </span>
+                &nbsp;less taxes
               </p>
             </div>
-          ) : null}
+          )}
         </div>
       </CardContent>
     </Card>

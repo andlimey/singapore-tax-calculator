@@ -14,10 +14,9 @@ interface ReliefProps {
 
 export const EarnedIncomeRelief: React.FC<{ value: number }> = ({ value }) => {
   return (
-    <div className="flex flex-row gap-4">
-      <div className="flex items-center space-x-2">
-        <p>Earned Income Relief</p>
-
+    <>
+      <Label className="flex flex-row items-center gap-2">
+        <span>Earned Income Relief</span>
         <ReliefTooltip>
           <p>
             The earned income relief is the lower of your earned income or the
@@ -38,24 +37,21 @@ export const EarnedIncomeRelief: React.FC<{ value: number }> = ({ value }) => {
             <li>$12,000 (60 and above)</li>
           </ul>
         </ReliefTooltip>
-
         <Link
           target="_blank"
           href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/earned-income-relief"
         >
           <ExternalLinkIcon size={16} />
         </Link>
-        <span>:</span>
-      </div>
-
-      <span>{`$${value}`}</span>
-    </div>
+      </Label>
+      <div>${value.toLocaleString()}</div>
+    </>
   );
 };
 
 export const SpouseRelief: React.FC<ReliefProps> = ({ value, onChange }) => {
   return (
-    <div className="space-y-2">
+    <>
       <ReliefLabel
         labelHtmlFor="spouseRelief"
         label="Spouse Relief"
@@ -78,13 +74,13 @@ export const SpouseRelief: React.FC<ReliefProps> = ({ value, onChange }) => {
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
       />
-    </div>
+    </>
   );
 };
 
 export const ChildRelief: React.FC<ReliefProps> = ({ value, onChange }) => {
   return (
-    <div className="space-y-2">
+    <>
       <ReliefLabel
         labelHtmlFor="childRelief"
         label="Child Relief"
@@ -99,7 +95,7 @@ export const ChildRelief: React.FC<ReliefProps> = ({ value, onChange }) => {
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
       />
-    </div>
+    </>
   );
 };
 
@@ -108,7 +104,7 @@ export const WorkingMotherChildRelief: React.FC<ReliefProps> = ({
   onChange,
 }) => {
   return (
-    <div className="space-y-2">
+    <>
       <ReliefLabel
         labelHtmlFor="workingMotherChildRelief"
         label="Working Mother's Child Relief"
@@ -126,13 +122,13 @@ export const WorkingMotherChildRelief: React.FC<ReliefProps> = ({
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
       />
-    </div>
+    </>
   );
 };
 
 export const ParentRelief: React.FC<ReliefProps> = ({ value, onChange }) => {
   return (
-    <div className="space-y-2">
+    <>
       <ReliefLabel
         labelHtmlFor="parentRelief"
         label="Parent Relief"
@@ -153,7 +149,7 @@ export const ParentRelief: React.FC<ReliefProps> = ({ value, onChange }) => {
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
       />
-    </div>
+    </>
   );
 };
 
@@ -161,8 +157,9 @@ export const GrandparentCaregiverRelief: React.FC<ReliefProps> = ({
   value,
   onChange,
 }) => (
-  <div className="space-y-2">
+  <>
     <ReliefLabel
+      className="self-start mt-3"
       labelHtmlFor="grandparentCaregiverRelief"
       label="Grandparent Caregiver Relief"
       href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/grandparent-caregiver-relief"
@@ -182,15 +179,17 @@ export const GrandparentCaregiverRelief: React.FC<ReliefProps> = ({
       <p>Enter $3,000 if you are entitled to this relief.</p>
     </ReliefLabel>
 
-    <Input
-      id="grandparentCaregiverRelief"
-      type="number"
-      value={value}
-      onChange={(e) => onChange(Math.min(Number(e.target.value), 3000))}
-      max={3000}
-    />
-    <p className="text-sm text-muted-foreground">Maximum relief: $3,000</p>
-  </div>
+    <div>
+      <Input
+        id="grandparentCaregiverRelief"
+        type="number"
+        value={value}
+        onChange={(e) => onChange(Math.min(Number(e.target.value), 3000))}
+        max={3000}
+      />
+      <p className="text-sm text-muted-foreground">Maximum relief: $3,000</p>
+    </div>
+  </>
 );
 
 export const HandicappedSiblingRelief: React.FC<ReliefProps> = ({
@@ -198,7 +197,7 @@ export const HandicappedSiblingRelief: React.FC<ReliefProps> = ({
   onChange,
 }) => {
   return (
-    <div className="space-y-2">
+    <>
       <ReliefLabel
         labelHtmlFor="handicappedSiblingRelief"
         label="Handicapped Sibling Relief"
@@ -216,16 +215,15 @@ export const HandicappedSiblingRelief: React.FC<ReliefProps> = ({
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
       />
-    </div>
+    </>
   );
 };
 
 export const CPFRelief: React.FC<{ value: number }> = ({ value }) => {
   return (
-    <div className="flex flex-row gap-4">
-      <div className="flex items-center space-x-2">
-        <p>CPF Relief</p>
-
+    <>
+      <Label className="self-center flex items-center space-x-2">
+        <span>CPF Relief</span>
         <ReliefTooltip>
           <p>
             CPF Relief is capped by the amount of compulsory employee CPF
@@ -233,18 +231,15 @@ export const CPFRelief: React.FC<{ value: number }> = ({ value }) => {
             CPF Act.
           </p>
         </ReliefTooltip>
-
         <Link
           target="_blank"
           href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/central-provident-fund(cpf)-relief-for-employees"
         >
           <ExternalLinkIcon size={16} />
         </Link>
-        <span>:</span>
-      </div>
-
-      <span>{`$${value}`}</span>
-    </div>
+      </Label>
+      <div className="self-center">${value.toLocaleString()}</div>
+    </>
   );
 };
 
@@ -253,8 +248,9 @@ export const LifeInsuranceRelief: React.FC<ReliefProps> = ({
   onChange,
 }) => {
   return (
-    <div className="space-y-2">
+    <>
       <ReliefLabel
+        className="self-start mt-3"
         labelHtmlFor="lifeInsuranceRelief"
         label="Life Insurance Relief"
         href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/life-insurance-relief"
@@ -262,21 +258,24 @@ export const LifeInsuranceRelief: React.FC<ReliefProps> = ({
         <p>Maximum relief is $5,000 less your CPF contribution.</p>
       </ReliefLabel>
 
-      <Input
-        id="lifeInsuranceRelief"
-        type="number"
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        max={5000}
-      />
-      <p className="text-sm text-muted-foreground">Maximum relief: $5000</p>
-    </div>
+      <div>
+        <Input
+          id="lifeInsuranceRelief"
+          type="number"
+          value={value}
+          onChange={(e) => onChange(Number(e.target.value))}
+          max={5000}
+        />
+        <p className="text-sm text-muted-foreground">Maximum relief: $5,000</p>
+      </div>
+    </>
   );
 };
 
 export const CourseFeeRelief: React.FC<ReliefProps> = ({ value, onChange }) => (
-  <div className="space-y-2">
+  <>
     <ReliefLabel
+      className="self-start mt-3"
       labelHtmlFor="courseFeeRelief"
       label="Course Fee Relief"
       href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/course-fees-relief"
@@ -284,20 +283,23 @@ export const CourseFeeRelief: React.FC<ReliefProps> = ({ value, onChange }) => (
       <p>Maximum relief is $5,500.</p>
     </ReliefLabel>
 
-    <Input
-      id="courseFeeRelief"
-      type="number"
-      value={value}
-      onChange={(e) => onChange(Math.min(Number(e.target.value), 5500))}
-      max={5500}
-    />
-    <p className="text-sm text-muted-foreground">Maximum relief: $5,500</p>
-  </div>
+    <div>
+      <Input
+        id="courseFeeRelief"
+        type="number"
+        value={value}
+        onChange={(e) => onChange(Math.min(Number(e.target.value), 5500))}
+        max={5500}
+      />
+      <p className="text-sm text-muted-foreground">Maximum relief: $5,500</p>
+    </div>
+  </>
 );
 
 export const NSmanRelief: React.FC<ReliefProps> = ({ value, onChange }) => (
-  <div className="space-y-2">
+  <>
     <ReliefLabel
+      className="self-start"
       labelHtmlFor="nsmanRelief"
       label="NSman Relief"
       href="https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/nsman-relief-(self-wife-and-parent)"
@@ -336,5 +338,31 @@ export const NSmanRelief: React.FC<ReliefProps> = ({ value, onChange }) => (
         <Label htmlFor="r5">$750 (Wife/Parent of NSman)</Label>
       </div>
     </RadioGroup>
-  </div>
+  </>
+);
+
+export const AdditionalRelief: React.FC<
+  ReliefProps & { additionalReliefCap: number }
+> = ({ value, onChange, additionalReliefCap }) => (
+  <>
+    <Label className="self-start mt-3" htmlFor="additionalRelief">
+      Additional Reliefs (e.g. SRS contribution)
+    </Label>
+    <div>
+      <Input
+        id="additionalRelief"
+        type="number"
+        placeholder="Enter additional relief"
+        value={value}
+        onChange={(e) =>
+          onChange(Math.min(Number(e.target.value), additionalReliefCap))
+        }
+        max={additionalReliefCap}
+        disabled={additionalReliefCap === 0}
+      />
+      <p className="text-sm text-muted-foreground">
+        {`Maximum relief: $${additionalReliefCap.toLocaleString()}`}
+      </p>
+    </div>
+  </>
 );
