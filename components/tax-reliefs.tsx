@@ -70,9 +70,8 @@ export const SpouseRelief: React.FC<ReliefProps> = ({ value, onChange }) => {
 
       <Input
         id="spouseRelief"
-        type="number"
         value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
+        onChange={(e) => onChange(Number(e.target.value) || 0)}
       />
     </>
   );
@@ -91,9 +90,8 @@ export const ChildRelief: React.FC<ReliefProps> = ({ value, onChange }) => {
 
       <Input
         id="childRelief"
-        type="number"
         value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
+        onChange={(e) => onChange(Number(e.target.value) || 0)}
       />
     </>
   );
@@ -118,9 +116,8 @@ export const WorkingMotherChildRelief: React.FC<ReliefProps> = ({
 
       <Input
         id="workingMotherChildRelief"
-        type="number"
         value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
+        onChange={(e) => onChange(Number(e.target.value) || 0)}
       />
     </>
   );
@@ -145,9 +142,8 @@ export const ParentRelief: React.FC<ReliefProps> = ({ value, onChange }) => {
 
       <Input
         id="parentRelief"
-        type="number"
         value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
+        onChange={(e) => onChange(Number(e.target.value) || 0)}
       />
     </>
   );
@@ -182,9 +178,8 @@ export const GrandparentCaregiverRelief: React.FC<ReliefProps> = ({
     <div>
       <Input
         id="grandparentCaregiverRelief"
-        type="number"
         value={value}
-        onChange={(e) => onChange(Math.min(Number(e.target.value), 3000))}
+        onChange={(e) => onChange(Math.min(Number(e.target.value) || 0, 3000))}
         max={3000}
       />
       <p className="text-sm text-muted-foreground">Maximum relief: $3,000</p>
@@ -211,9 +206,8 @@ export const HandicappedSiblingRelief: React.FC<ReliefProps> = ({
 
       <Input
         id="handicappedSiblingRelief"
-        type="number"
         value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
+        onChange={(e) => onChange(Number(e.target.value) || 0)}
       />
     </>
   );
@@ -261,9 +255,10 @@ export const LifeInsuranceRelief: React.FC<ReliefProps> = ({
       <div>
         <Input
           id="lifeInsuranceRelief"
-          type="number"
           value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
+          onChange={(e) =>
+            onChange(Math.min(Number(e.target.value) || 0, 5000))
+          }
           max={5000}
         />
         <p className="text-sm text-muted-foreground">Maximum relief: $5,000</p>
@@ -286,9 +281,8 @@ export const CourseFeeRelief: React.FC<ReliefProps> = ({ value, onChange }) => (
     <div>
       <Input
         id="courseFeeRelief"
-        type="number"
         value={value}
-        onChange={(e) => onChange(Math.min(Number(e.target.value), 5500))}
+        onChange={(e) => onChange(Math.min(Number(e.target.value) || 0, 5500))}
         max={5500}
       />
       <p className="text-sm text-muted-foreground">Maximum relief: $5,500</p>
@@ -351,11 +345,10 @@ export const AdditionalRelief: React.FC<
     <div>
       <Input
         id="additionalRelief"
-        type="number"
         placeholder="Enter additional relief"
         value={value}
         onChange={(e) =>
-          onChange(Math.min(Number(e.target.value), additionalReliefCap))
+          onChange(Math.min(Number(e.target.value) || 0, additionalReliefCap))
         }
         max={additionalReliefCap}
         disabled={additionalReliefCap === 0}

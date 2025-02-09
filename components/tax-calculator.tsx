@@ -172,23 +172,20 @@ export default function TaxCalculator() {
           <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-4 items-center">
             <Label>Employment Income</Label>
             <Input
-              type="number"
               value={income}
-              onChange={(e) => setIncome(Number(e.target.value))}
+              onChange={(e) => setIncome(Number(e.target.value) || 0)}
             />
 
             <Label>Bonus</Label>
             <Input
-              type="number"
               value={bonus}
-              onChange={(e) => setBonus(Number(e.target.value))}
+              onChange={(e) => setBonus(Number(e.target.value) || 0)}
             />
 
             <Label className="pl-4">Less: Business Expenses</Label>
             <Input
-              type="number"
               value={businessExpenses}
-              onChange={(e) => setBusinessExpenses(Number(e.target.value))}
+              onChange={(e) => setBusinessExpenses(Number(e.target.value) || 0)}
             />
 
             <Label className="font-bold">Net Employment Income</Label>
@@ -196,9 +193,8 @@ export default function TaxCalculator() {
 
             <Label>Other Income</Label>
             <Input
-              type="number"
               value={otherIncome}
-              onChange={(e) => setOtherIncome(Number(e.target.value))}
+              onChange={(e) => setOtherIncome(Number(e.target.value) || 0)}
             />
 
             <Label className="font-bold">Total Income</Label>
@@ -206,9 +202,8 @@ export default function TaxCalculator() {
 
             <Label className="pl-4">Less: Approved Donations</Label>
             <Input
-              type="number"
               value={donations}
-              onChange={(e) => setDonations(Number(e.target.value))}
+              onChange={(e) => setDonations(Number(e.target.value) || 0)}
             />
 
             <Label className="font-bold">Assessable Income</Label>
@@ -225,10 +220,9 @@ export default function TaxCalculator() {
           <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] items-center gap-x-4 gap-y-6">
             <Label>Age</Label>
             <Input
-              type="number"
               placeholder="Enter your age"
               value={age}
-              onChange={(e) => setAge(Number(e.target.value))}
+              onChange={(e) => setAge(Number(e.target.value) || 0)}
             />
 
             <Label>Gender</Label>
