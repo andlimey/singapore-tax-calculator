@@ -167,9 +167,9 @@ export default function TaxCalculator() {
 
       <CardContent className="space-y-6">
         {/* Income */}
-        <div>
+        <div className="space-y-4">
           <h3 className="text-lg font-bold">Income</h3>
-          <div className="grid grid-cols-[300px_1fr] gap-4 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-4 items-center">
             <Label>Employment Income</Label>
             <Input
               type="number"
@@ -219,10 +219,10 @@ export default function TaxCalculator() {
         <div className="border-b border-gray-200" />
 
         {/* Reliefs */}
-        <div>
+        <div className="space-y-4">
           <h3 className="text-lg font-bold">Reliefs</h3>
 
-          <div className="grid grid-cols-[300px_1fr] items-center gap-x-4 gap-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] items-center gap-x-4 gap-y-6">
             <Label>Age</Label>
             <Input
               type="number"
