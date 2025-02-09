@@ -26,6 +26,12 @@ However, other online calculators require me to input my existing assessable inc
 
 This web app allows me to input my income and tax reliefs, which are saved to local storage. I can then tweak the additional reliefs to see how much tax I would save.
 
+I also wanted to test using v0 from Vercel. This project heavily uses v0 and Cursor for quick implementation.
+
+## Limitations
+
+The tax reliefs are applicable for the year 2025.
+
 ## Deployment
 
 This app is deployed at https://singapore-tax-calculator.vercel.app/ using Vercel.
