@@ -37,3 +37,29 @@ The tax reliefs are applicable for the year 2025.
 This app is deployed at https://singapore-tax-calculator.vercel.app/ using Vercel.
 
 To deploy a new version, push a new commit to the `main` branch.
+
+## Lessons learned
+
+### First cut: Only including tax reliefs
+
+The first implementation only had 1 input for total income. The rest were inputs for the different tax reliefs.
+
+This was a simple first implementation, but I wanted to make it even easier to input the reliefs.
+
+### Second cut: Automatically calculating reliefs
+
+I started with automatically calculating the Earned Income Relief since this was the easiest to calculate.
+
+However, this required the user to instead input 2 fields - their age and whether they are handicapped. I am still contemplating if I should just let the Earned Income Relief be a single field, but I'll leave it as it is for now.
+
+I also realised that the other fields are not necessarily as straightforward to calculate.
+
+For example, the Parent Relief can be shared with other claimants, so there is no easy way to automate the calculation.
+
+The other relief I could calculate automatically would be the CPF contribution relief, since it is based on the employment income and bonus.
+
+### Third cut: Adding other income segments
+
+I later realised I had to add other income segments. For the CPF contribution relief, I implemented 1 field for employment income, and another for bonus.
+
+However, this would exclude other potential income sources that aren't subjected to CPF deductions.
