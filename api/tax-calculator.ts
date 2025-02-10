@@ -68,7 +68,7 @@ export function calculateEarnedIncomeRelief({
   return Math.min(income, maxRelief);
 }
 
-const ORDINARY_WAGE_CEILING = 88_800; // 7_400 * 12
+const ORDINARY_WAGE_CEILING = 81_600; // 6800 * 12 for 2024
 const CPF_ANNUAL_WAGE_CEILING = 102_000;
 
 function getAdditionalWageCeiling(totalOrdinaryWage: number): number {

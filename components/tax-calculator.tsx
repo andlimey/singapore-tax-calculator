@@ -162,6 +162,7 @@ export default function TaxCalculator() {
         <CardTitle>Income Tax Calculator</CardTitle>
         <CardDescription>
           Calculate your income tax based on your income and applicable reliefs
+          for the year 2024
         </CardDescription>
       </CardHeader>
 
